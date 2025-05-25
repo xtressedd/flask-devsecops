@@ -1,0 +1,32 @@
+name: DevSecOps Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t flask-devsecops .
+  
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run security tests
+        run: |
+          pip install bandit safety
+          bandit -r app/
+          safety check
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to AWS (Ejemplo)
+        run: |
+          echo "Aquí iría el despliegue en AWS/Azure/etc."
