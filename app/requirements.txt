@@ -1,5 +1,0 @@
-flask
-gunicorn #para produccion
-bandit #analisis d seguridad
-flask-restx #pal swagger
-flask-cors #para permitir las peticiones desde el frontend de swagger
